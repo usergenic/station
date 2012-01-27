@@ -20,8 +20,9 @@ Station works kind of like `rake` in that it looks for a `Stationfile` or
 `.station` file in the current directory and if it doesn't find one, it walks up
 until it finds one or gets to the root of the volume and complains.
 
-    $ station list
-    no stations defined.
+    $ station
+    Usage: station <generator> [target] [options]
+
 
 Overview
 --------
@@ -34,6 +35,14 @@ generator for a typical rubygem project complete with rspec support.
     require "active_support/inflector" # for String#underscore/camelize
 
     generator "new_gem" do
+
+      param :name,     "The human-friendly name of your gem (use spaces and capitalize)"
+      param :version,  "A version number in Rubygems format (defaults to 0.0.0)"
+      param :email,    "Your email address"
+      param :author,   "Your name"
+      param :homepage, "A project homepage"
+      param :author,   "Your name"
+      param :email,    "Your email address"
 
       file "<%= name.underscore %>.gemspec", <<-eof
         Gem::Specification.new do |s|

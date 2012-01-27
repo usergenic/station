@@ -1,3 +1,4 @@
+require "station/generator/params_recorder"
 require "station/generator/session"
 require "station/generator/template_binding"
 require "fileutils"
@@ -18,6 +19,10 @@ module Station
 
     def new_session(target=nil)
       Session.new(target, self)
+    end
+
+    def params
+      @params ||= ParamsRecorder.new(block).params
     end
 
   end

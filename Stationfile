@@ -1,0 +1,16 @@
+# The station file for the station gem itself!  WHOA.
+require "active_support/inflector"
+
+generator "spec" do
+
+  param :subject, "Class/Module you are writing spec for."
+
+  file "spec/<%= subject.moduleize %>_spec.rb", <<-eof
+    require "spec_helper"
+
+    describe <%= subject %> do
+
+    end
+
+  eof
+end

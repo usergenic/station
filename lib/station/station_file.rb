@@ -19,10 +19,15 @@ module Station
       end
     end
 
+    def self.load(filename)
+      new(filename, File.read(filename))
+    end
+
     attr_accessor :generators
 
-    def initialize(content)
+    def initialize(filename, content)
       @generators = {}
+      instance_eval(content, filename)
     end
 
     def generator(name, opts={}, &block)

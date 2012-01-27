@@ -4,10 +4,10 @@ module Station
 
     class Session
 
-      attr_reader :generator
+      attr_reader :generator, :params
 
-      def initialize(target, generator)
-        @target, @generator = target, generator
+      def initialize(target, params, generator)
+        @target, @params, @generator = target, params, generator
       end
 
       def set_default_target(default_target)
@@ -18,15 +18,23 @@ module Station
         @default_target ||= "."
       end
 
-      def erb(string, opts={})
-        template_binding = TemplateBinding.new(generator.opts.merge(opts))
+      def erb(string, params={})
+        template_binding = TemplateBinding.new(self.params.merge(params))
         ERB.new(string).result(template_binding.binding)
       end
 
-      def file(filename, content=nil, opts={})
-        filename = erb(filename, opts)
-        content  = unindent(erb(content,  opts))
+      def file(filename, content=nil, params={})
+        filename = erb(filename, params)
+        content  = unindent(erb(content, params))
+        write_file(filename, content)
+      end
+
+      def write_file(filename, content)
         File.open(filename, "w") { |file| file.write(content) }
+      end
+
+      def param(name, description)
+        :noop # this is handled by the generator's parser
       end
 
       def target
