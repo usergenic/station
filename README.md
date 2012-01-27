@@ -30,11 +30,10 @@ Station uses a simple DSL for expressing file and folder structure generators
 that looks like this:
 
     # My Stationfile
-    require "active_support/inflector"
+    require "active_support/inflector" # for String#underscore/camelize
 
-    generator "new_gem", :description => <<-end do
+    generator "new_gem" do
 
-      end
       file "<%= name.underscore %>.gemspec", <<-eof
         Gem::Specification.new do |s|
           s.name          = "<%= name %>"
@@ -50,13 +49,13 @@ that looks like this:
           s.add_development_dependency "rspec"
         end
       eof
-      dir  "lib"
+
       file "lib/<%= name.underscore %>.rb", <<-eof
         require "<%= name.underscore %>/version"
         module <%= name.camelize %>
         end
       eof
-      dir  "spec"
+
       file "spec/spec_helper.rb", <<-eof
         require "<%= name.underscore %>"
         require "rspec/autorun"
@@ -65,6 +64,7 @@ that looks like this:
           config.mock_with :mocha
         end
       eof
+
       file "spec/<%= name.underscore %>_spec.rb", <<-eof
         require "spec_helper"
 
@@ -74,6 +74,7 @@ that looks like this:
           end
         end
       oef
+
     end
 
 
