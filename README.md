@@ -9,8 +9,8 @@ Installation
 You can install via rubygems:
 
     $ gem install station
-    Fetching: station-1.0.0.gem (100%)
-    Successfully installed station-1.0.0
+    Fetching: station-0.0.0.gem (100%)
+    Successfully installed station-0.0.0
     1 gem installed
 
 Usage
