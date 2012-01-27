@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name          = "Station"
+  s.name          = "station"
   s.version       = '0.0.1'
   s.authors       = ["Brendan Baldwin"]
   s.email         = ["brendan@usergenic.com"]

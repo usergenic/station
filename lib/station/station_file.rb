@@ -9,7 +9,7 @@ module Station
 
       while dir != "/"
         FILENAMES.each do |filename|
-          search_path = File.expand_path(File.join(dir, filename))
+          search_path = File.join(dir, filename)
           return search_path if File.exist?(search_path)
         end
 

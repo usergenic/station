@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    Station (0.0.1)
+    station (0.0.1)
 
 GEM
   remote: http://rubygems.org/
@@ -32,10 +32,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  Station!
   growl
   guard
   guard-rspec
   mocha
   rake
   rspec
+  station!
