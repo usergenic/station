@@ -27,7 +27,8 @@ Overview
 --------
 
 Station uses a simple DSL for expressing file and folder structure generators
-that looks like this:
+that looks like the following.  Here is an example of how you might define a
+generator for a typical rubygem project complete with rspec support.
 
     # My Stationfile
     require "active_support/inflector" # for String#underscore/camelize
@@ -49,6 +50,11 @@ that looks like this:
           s.add_development_dependency "rspec"
         end
       eof
+
+      file "Gemfile", <<-eof
+        source "http://rubygems.org"
+        gemspec
+      end
 
       file "lib/<%= name.underscore %>.rb", <<-eof
         require "<%= name.underscore %>/version"
@@ -77,6 +83,7 @@ that looks like this:
 
     end
 
-
-
-
+Notice that ERB is used in file path strings as well as in template source.
+This is done specifically to reduce mode switching and to make it easy/clearer
+for templates to refer to the local variable values being passed in when you run
+Station.

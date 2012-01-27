@@ -1,2 +1,5 @@
 #!/usr/bin/env ruby
-puts "Not Yet Implemented"
+
+require 'station/cli'
+
+Station::CLI.run(ARGV)
