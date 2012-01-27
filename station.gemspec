@@ -10,7 +10,10 @@ Gem::Specification.new do |s|
   s.executables   = s.files.grep(/^bin\//).map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 
+  s.add_development_dependency 'growl'
   s.add_development_dependency 'guard'
+  s.add_development_dependency 'guard-rspec'
+  s.add_development_dependency 'mocha'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
 end
