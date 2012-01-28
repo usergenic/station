@@ -50,14 +50,14 @@ module Station
           ssn.erb("<%= monkey %>", :monkey => "gorilla").should == "gorilla"
         end
 
-        it "should use values in initialization options as named values in ERB template" do
-          gen = Generator.new(nil, :monkey => "spidermonkey")
+        it "should safely treat values not given as parameters as nil values in ERB template" do
+          gen = Generator.new(nil)
           ssn = gen.new_session
-          ssn.erb("<%= monkey %>").should == "spidermonkey"
+          ssn.erb("<%= monkey %>") == ""
         end
 
-        it "should use override values in initialization options with method options hash" do
-          gen = Generator.new(nil, :monkey => "spidermonkey")
+        it "should allow providing values in initialization options with method options hash" do
+          gen = Generator.new(nil)
           ssn = gen.new_session
           ssn.erb("<%= monkey %>", :monkey => "baboon").should == "baboon"
         end

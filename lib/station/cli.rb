@@ -26,9 +26,10 @@ module Station
     end
 
     def run
-      generator_name = argv.shift.to_s
+      exit_with_help unless argv.first.to_s =~ /\A[a-z]/i
+      generator_name = argv.shift
 
-      exit_with_help unless generator_name =~ /\A[a-z]/i
+      target = argv.shift if argv.first.to_s =~ /\A[a-z]/i
 
       @station_file = StationFile.load(StationFile.find_station_file)
 
@@ -36,15 +37,22 @@ module Station
 
       exit_with "Unknown generator #{generator_name.inspect}" unless generator
 
-      OptionParser.new do |parser|
+      params = {}
+
+      parser = OptionParser.new do |parser|
+        parser.banner = "Usage: station #{generator_name} [<target>] [options]"
+        parser.separator ""
+        parser.separator "#{generator_name} options:"
         generator.params.each do |param|
           parser.on "--#{param.name} VALUE", param.description do |value|
-            options[param.name] = value
+            params[param.name] = value
           end
         end
       end
 
-      generator.new_session(target)
+      parser.parse!(argv)
+
+      generator.new_session(target, params)
 
       puts "station using #{@station_file.inspect} with #{@argv.inspect}"
     end

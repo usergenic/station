@@ -1,3 +1,4 @@
+require "station/generator/param"
 require "station/generator/params_recorder"
 require "station/generator/session"
 require "station/generator/template_binding"
@@ -7,18 +8,18 @@ module Station
 
   class Generator
 
-    attr_reader :name, :opts, :block
+    attr_reader :name, :options, :params, :block
 
-    def initialize(name=nil, opts={}, &block)
-      @name, @opts, @block = name, opts, block
+    def initialize(name=nil, options={}, &block)
+      @name, @options, @block = name, options, block
     end
 
-    def generate!(target=nil, opts={})
+    def generate!(target=nil, params={})
       new_session(target).instance_eval(&block)
     end
 
-    def new_session(target=nil)
-      Session.new(target, self)
+    def new_session(target=nil, params={})
+      Session.new(target, params, self)
     end
 
     def params
