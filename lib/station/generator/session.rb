@@ -53,12 +53,18 @@ module Station
       end
 
       def ensure_folder(path)
-        plan.steps << [:create_folder, path] unless File.directory?(path)
+        # TODO: Need a cross-platform (ahem Windows) way to ensure the safety of
+        # a mkdir_p call (since there may be a file sitting somewhere that a
+        # directory would otherwise need to be.  For now, we'll just report the
+        # conflict as false.
+        plan.steps << [false, :create_folder, path] unless File.directory?(path)
       end
 
       def write_file(filename, content)
         ensure_folder(File.dirname(filename))
-        plan.steps << [:write_file, filename, content]
+        conflict = File.exist?(filename)
+        # TODO: Replace ridiculous tuples with Step objects
+        plan.steps << [conflict, :write_file, filename, content]
       end
 
       def param(name, *args)

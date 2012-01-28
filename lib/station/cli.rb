@@ -39,12 +39,37 @@ module Station
 
       params = {}
 
+      reserved_shortcuts = ["-h","-v"]
+
       parser = OptionParser.new do |parser|
         parser.banner = "Usage: station #{generator_name} [<target>] [options]"
         parser.separator ""
-        parser.separator "#{generator_name} options:"
+        parser.separator "global options:"
+        parser.on "-h", "--help", "Show general and generator-specific help" do
+          puts parser
+          exit
+        end
+        parser.on "-v", "--version", "Display 'station' version information" do
+          puts Station::VERSION
+          exit
+        end
+        parser.on "-f", "--force", "Overwrite any pre-existing files or paths" do
+          session_options
+        end
+        parser.separator ""
+        description = generator.options[:description]
+        if description
+          parser.separator [generator_name, generator.options[:description]].compact.join(" - ")
+          parser.separator ""
+        end
+        parser.separator "options for #{generator_name}:"
         generator.params.each do |param|
-          parser.on "--#{param.name} VALUE", param.options[:description] do |value|
+          shortcut = "-#{param.name.chars[0]}"
+          shortcut = shortcut.upcase if reserved_shortcuts.include?(shortcut)
+          shortcut = nil if reserved_shortcuts
+          parser_args = shortcut, "--#{param.name} VALUE", param.options[:description]
+
+            parser.on "--#{param.name.chars[0]}", "--#{param.name} VALUE", param.options[:description] do |value|
             params[param.name] = value
           end
         end
@@ -64,7 +89,13 @@ module Station
       end
 
       session = generator.new_session(target, params)
-      session.generate!
+      plan = session.plan
+      unless plan.valid? or force
+        puts plan.describe_conflicts
+        exit
+      end
+
+      plan.execute!
     end
 
   end

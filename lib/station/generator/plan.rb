@@ -2,9 +2,16 @@ module Station
   class Generator
     class Plan
 
-      def describe
-        descriptions = steps.uniq.map { |name, *args| send "describe_#{name}", *args }
+      def describe(steps=self.steps.uniq)
+        descriptions = steps.map do |conflict, name, *args|
+          send "describe_#{name}", *args
+        end
         descriptions.join("\n")
+      end
+
+      def describe_conflicts
+        conflicts = steps.uniq.select { |conflict, name, *args| conflict }
+        describe(conflicts)
       end
 
       def describe_write_file(filename, content)
