@@ -37,9 +37,10 @@ module Station
 
       exit_with "Unknown generator #{generator_name.inspect}" unless generator
 
+      force  = false
       params = {}
 
-      reserved_shortcuts = ["-h","-v"]
+      used_shortcuts = ["-h","-v"]
 
       parser = OptionParser.new do |parser|
         parser.banner = "Usage: station #{generator_name} [<target>] [options]"
@@ -57,11 +58,13 @@ module Station
           session_options
         end
         parser.separator ""
+
         description = generator.options[:description]
         if description
           parser.separator [generator_name, generator.options[:description]].compact.join(" - ")
           parser.separator ""
         end
+
         parser.separator "options for #{generator_name}:"
         generator.params.each do |param|
           shortcut = "-#{param.name.chars[0]}"
