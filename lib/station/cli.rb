@@ -43,9 +43,8 @@ module Station
       used_shortcuts = ["-h","-v"]
 
       parser = OptionParser.new do |parser|
-        parser.banner = "Usage: station #{generator_name} [<target>] [options]"
+        parser.banner = "Usage: station <generator> [<target>] [options]"
         parser.separator ""
-        parser.separator "global options:"
         parser.on "-h", "--help", "Show general and generator-specific help" do
           puts parser
           exit
@@ -55,7 +54,7 @@ module Station
           exit
         end
         parser.on "-f", "--force", "Overwrite any pre-existing files or paths" do
-          session_options
+          force = true
         end
         parser.separator ""
 
@@ -65,15 +64,18 @@ module Station
           parser.separator ""
         end
 
-        parser.separator "options for #{generator_name}:"
+        parser.separator "Usage: station #{generator_name} [<target>] [options]"
+        parser.separator ""
         generator.params.each do |param|
-          puts param.inspect
           shortcut = "-#{param.name.chars.first}"
-          shortcut = shortcut.upcase if reserved_shortcuts.include?(shortcut)
-          shortcut = nil if reserved_shortcuts
-          parser_args = shortcut, "--#{param.name} VALUE", param.options[:description]
+          shortcut = shortcut.upcase if used_shortcuts.include?(shortcut)
+          shortcut = nil if used_shortcuts.include?(shortcut)
+          used_shortcuts << shortcut if shortcut
 
-            parser.on "--#{param.name.chars[0]}", "--#{param.name} VALUE", param.options[:description] do |value|
+          parser_args = shortcut, "--#{param.name} VALUE", param.options[:description]
+          parser_args.compact!
+
+          parser.on *parser_args do |value|
             params[param.name] = value
           end
         end
@@ -88,6 +90,8 @@ module Station
       unless required_and_missing.empty?
         required_and_missing.each do |param|
           puts "Missing required option --#{param.name}"
+          puts
+          parser.parse [generator_name, "-h"]
         end
         exit 1
       end
