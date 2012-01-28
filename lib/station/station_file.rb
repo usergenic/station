@@ -23,18 +23,17 @@ module Station
       new(filename, File.read(filename))
     end
 
-    attr_accessor :generators
-
     def initialize(filename, content)
-      @generators = {}
       instance_eval(content, filename)
     end
 
-    def generator(name, opts={}, &block)
-      opts[:generators] = generators
-      generators[name] = Generator.new(name, opts, &block)
+    def generator(name, options={}, &block)
+      generators[name] = Generator.new(name, options, &block)
     end
 
+    def generators
+      @generators ||= {}
+    end
   end
 
 end

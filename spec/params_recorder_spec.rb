@@ -14,10 +14,10 @@ describe Station::Generator::ParamsRecorder do
     recorder = Station::Generator::ParamsRecorder.new(block)
 
     recorder.params[0].name.should == "but"
-    recorder.params[0].description.should == "this does"
+    recorder.params[0].options[:description].should == "this does"
 
     recorder.params[1].name.should == "and"
-    recorder.params[1].description.should == "so does this"
+    recorder.params[1].options[:description].should == "so does this"
 
   end
 

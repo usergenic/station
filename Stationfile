@@ -3,9 +3,9 @@ require "active_support/inflector"
 
 generator "spec" do
 
-  param :subject, "Class/Module you are writing spec for."
+  param :subject, "Class/Module you are writing spec for.", :required => true
 
-  file "spec/<%= subject.moduleize %>_spec.rb", <<-eof
+  file "spec/<%= subject.camelize %>_spec.rb", <<-eof
     require "spec_helper"
 
     describe <%= subject %> do

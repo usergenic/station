@@ -1,3 +1,5 @@
+require "erb"
+
 module Station
 
   class Generator
@@ -27,6 +29,10 @@ module Station
         filename = erb(filename, params)
         content  = unindent(erb(content, params))
         write_file(filename, content)
+      end
+
+      def generate!
+        instance_eval(&generator.block)
       end
 
       def write_file(filename, content)

@@ -4,10 +4,10 @@ module Station
 
     class Param
 
-      attr_reader :name, :description
+      attr_reader :name, :options
 
-      def initialize(name, description)
-        @name, @description = name.to_s, description
+      def initialize(name, options={})
+        @name, @options = name.to_s, options
       end
 
     end

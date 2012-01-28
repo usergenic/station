@@ -12,8 +12,10 @@ module Station
         @params ||= []
       end
 
-      def param(name, description)
-        params << Station::Generator::Param.new(name, description)
+      def param(name, *args)
+        options = args.last.is_a?(Hash) ? args.pop.dup : {}
+        options[:description] ||= args.last if args.last
+        params << Station::Generator::Param.new(name, options)
       end
 
       # We literally don't care about anything other than the `param` method for

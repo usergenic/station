@@ -52,9 +52,19 @@ module Station
 
       parser.parse!(argv)
 
-      generator.new_session(target, params)
+      required_and_missing = generator.params.select do |param|
+        param.options[:required] and params[param.name].nil?
+      end
 
-      puts "station using #{@station_file.inspect} with #{@argv.inspect}"
+      unless required_and_missing.empty?
+        required_and_missing.each do |param|
+          puts "Missing required option --#{param.name}"
+        end
+        exit 1
+      end
+
+      session = generator.new_session(target, params)
+      session.generate!
     end
 
   end
