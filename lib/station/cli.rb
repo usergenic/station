@@ -67,7 +67,8 @@ module Station
 
         parser.separator "options for #{generator_name}:"
         generator.params.each do |param|
-          shortcut = "-#{param.name.chars[0]}"
+          puts param.inspect
+          shortcut = "-#{param.name.chars.first}"
           shortcut = shortcut.upcase if reserved_shortcuts.include?(shortcut)
           shortcut = nil if reserved_shortcuts
           parser_args = shortcut, "--#{param.name} VALUE", param.options[:description]
@@ -92,6 +93,7 @@ module Station
       end
 
       session = generator.new_session(target, params)
+
       plan = session.plan
       unless plan.valid? or force
         puts plan.describe_conflicts
