@@ -39,7 +39,7 @@ module Station
         File.open(filename, "w") { |file| file.write(content) }
       end
 
-      def param(name, description)
+      def param(name, *args)
         :noop # this is handled by the generator's parser
       end
 

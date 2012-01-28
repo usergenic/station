@@ -44,7 +44,7 @@ module Station
         parser.separator ""
         parser.separator "#{generator_name} options:"
         generator.params.each do |param|
-          parser.on "--#{param.name} VALUE", param.description do |value|
+          parser.on "--#{param.name} VALUE", param.options[:description] do |value|
             params[param.name] = value
           end
         end
