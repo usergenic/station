@@ -5,7 +5,7 @@ generator "spec" do
 
   param :subject, "Class/Module you are writing spec for.", :required => true
 
-  file "spec/<%= subject.camelize %>_spec.rb", <<-eof
+  file "spec/<%= subject.underscore %>_spec.rb", <<-eof
     require "spec_helper"
 
     describe <%= subject %> do

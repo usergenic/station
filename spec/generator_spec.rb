@@ -73,9 +73,9 @@ module Station
       describe Generator::Session, "#file" do
 
         it "should create a file in the file system" do
-          File.expects(:open).with("some/file/path.rb","w")
           gen = Generator.new
           ssn = gen.new_session
+          ssn.expects(:write_file)
           ssn.file "some/file/path.rb", <<-eof
             my file
           eof

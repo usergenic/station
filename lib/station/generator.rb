@@ -1,5 +1,6 @@
 require "station/generator/param"
 require "station/generator/params_recorder"
+require "station/generator/plan"
 require "station/generator/session"
 require "station/generator/template_binding"
 require "fileutils"
@@ -23,7 +24,7 @@ module Station
     end
 
     def params
-      @params ||= ParamsRecorder.new(block).params
+      @params ||= block ? ParamsRecorder.new(block).params : []
     end
 
   end
